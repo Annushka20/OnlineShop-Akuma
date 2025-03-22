@@ -1,0 +1,43 @@
+.main-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+  }
+  
+  .main-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .image-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem; 
+    margin: 1.5rem 0;
+  }
+  
+  .woman-img {
+    max-width: 45%; 
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .woman-img:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+  }
+  
+  .main-subtitle {
+    font-size: 1.5rem;
+    color: #555;
+    margin: 1rem 0;
+  }
