@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './product.css';
 
-const ProductDetails = () => {
+const ProductDetails = ({ onAddToCart }) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,11 @@ const ProductDetails = () => {
     fetch(`https://fakestoreapi.com/products/${id}`)
       .then((res) => res.json())
       .then((res) => {
-        setProduct(res);
+        setProduct({
+          ...res,
+          count: 1,
+          cardPrice: res.price
+        });
         setLoading(false);
       })
       .catch((error) => {
@@ -19,6 +23,12 @@ const ProductDetails = () => {
         setLoading(false);
       });
   }, [id]);
+
+  const handleAddToCart = () => {
+    if (product) {
+      onAddToCart(product);
+    }
+  };
 
   if (loading) {
     return <div className="loading">Loading...</div>;
@@ -36,6 +46,7 @@ const ProductDetails = () => {
       <p className="product-price">${product.price}</p>
       <p className="product-category">{product.category}</p>
       <p className="product-rating">Rating: {product.rating.rate} ({product.rating.count} reviews)</p>
+      <button onClick={handleAddToCart} className="add-to-cart-button">Add to Cart</button>
     </div>
   );
 };

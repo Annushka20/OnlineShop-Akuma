@@ -2,10 +2,10 @@ import { Outlet } from 'react-router-dom';
 import Nav from '../Nav/nav';
 import Footer from '../Footer/footer';
 
-const Layout = () => {
+const Layout = ({ cartCount }) => {
   return (
     <section>
-      <Nav />
+      <Nav cartCount={cartCount} />
       <Outlet /> 
       <Footer />
     </section>
