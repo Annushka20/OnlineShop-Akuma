@@ -3,7 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 import Error from './Pages/Error/error';
 import { Nav, Main, Footer, ProductsC, ProductDetails, Layout } from './Components/index';
 import CartPage from './Pages/Error/Cart/CartPage';
-import { useState } from 'react';
+import { createContext, useState } from 'react';
+
+export const CartContext = createContext();
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -28,18 +30,23 @@ function App() {
         item.id === productId
           ? { ...item, count: newQuantity, cardPrice: item.price * newQuantity }
           : item)
-  )}
+    );
+  };
 
-     return (
-    <Routes>
-      <Route path="/" element={<Layout cartCount={cartItems.reduce((sum, item) => sum + item.count, 0)} />}>
-        <Route index element={<Main />} /> 
-        <Route path="products" element={<ProductsC onAddToCart={addToCart} />} /> 
-        <Route path="products/:id" element={<ProductDetails onAddToCart={addToCart} />} /> 
-        <Route path="cart" element={<CartPage cartItems={cartItems} onQuantityChange={updateQuantity} />} />
-        <Route path="*" element={<Error />} /> 
-      </Route>
-    </Routes>
+  const cartCount = cartItems.reduce((sum, item) => sum + item.count, 0);
+
+  return (
+    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, cartCount }}>
+      <Routes>
+        <Route path="/" element={<Layout cartCount={cartCount} />}>
+          <Route index element={<Main />} /> 
+          <Route path="products" element={<ProductsC onAddToCart={addToCart} />} /> 
+          <Route path="products/:id" element={<ProductDetails onAddToCart={addToCart} />} /> 
+          <Route path="cart" element={<CartPage cartItems={cartItems} onQuantityChange={updateQuantity} />} />
+          <Route path="*" element={<Error />} /> 
+        </Route>
+      </Routes>
+    </CartContext.Provider>
   );
 }
 
