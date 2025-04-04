@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom'; 
-import './productsC.css';
+import React, { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
+import "./productsC.css";
+import { useCart } from "../../context/CartContext";
 
-const ProductsC = ({ onAddToCart }) => {
+const ProductsC = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { addToCart } = useCart();
+  // console.log();
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
+    fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((res) => {
-        setProducts(res.map(product => ({
-          ...product,
-          count: 1,
-          cardPrice: product.price
-        })));
+        setProducts(
+          res.map((product) => ({
+            ...product,
+            count: 1,
+            cardPrice: product.price,
+          }))
+        );
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching', error);
+        console.error("Error fetching", error);
         setLoading(false);
       });
   }, []);
@@ -34,12 +38,16 @@ const ProductsC = ({ onAddToCart }) => {
         {products.map((product) => (
           <div key={product.id} className="product-card">
             <NavLink to={`/products/${product.id}`}>
-              <img src={product.image} alt={product.title} className="product-image" />
+              <img
+                src={product.image}
+                alt={product.title}
+                className="product-image"
+              />
               <h3 className="product-title">{product.title}</h3>
               <p className="product-price">${product.price}</p>
             </NavLink>
-            <button 
-              onClick={() => onAddToCart(product)} 
+            <button
+              onClick={() => addToCart(product)}
               className="add-to-cart-button"
             >
               Add to Cart

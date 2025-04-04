@@ -1,5 +1,6 @@
-import React from 'react';
-import './cartPage.css';
+import React from "react";
+import "./cartPage.css";
+import { useCart } from "../../../context/CartContext";
 
 const CartItem = ({ item, onQuantityChange }) => {
   const handleIncrement = () => {
@@ -29,21 +30,25 @@ const CartItem = ({ item, onQuantityChange }) => {
   );
 };
 
-const CartPage = ({ cartItems, onQuantityChange }) => {
-  const total = cartItems.reduce((sum, item) => sum + (item.price * item.count), 0);
+const CartPage = () => {
+  const { cartItems, onQuantityChange } = useCart();
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.count,
+    0
+  );
 
   return (
     <div className="cart-page">
       <h1>Shopping Cart</h1>
-      {cartItems.length === 0 ? (
+      {cartItems?.length === 0 ? (
         <p>cart is empty</p>
       ) : (
         <>
           <div className="cart-items">
-            {cartItems.map((item) => (
-              <CartItem 
-                key={item.id} 
-                item={item} 
+            {cartItems?.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
                 onQuantityChange={onQuantityChange}
               />
             ))}
